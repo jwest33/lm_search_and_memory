@@ -1,0 +1,33 @@
+# SearXNG settings for MCP tool integration
+use_default_settings: true
+
+general:
+  instance_name: "SearXNG Local"
+  debug: false
+
+server:
+  secret_key: "91e0cb73ec73163ae3c711b0fea79791fa764709386a8e5cf9cad45a188ba8fb"
+  bind_address: "0.0.0.0:8080"
+  base_url: "http://localhost:8888/"
+  limiter: false
+  image_proxy: true
+  method: "GET"
+
+search:
+  safe_search: 0
+  autocomplete: "google"
+  formats:
+    - html
+    - json
+  default_lang: "en"
+
+redis:
+  url: redis://valkey:6379/0
+
+ui:
+  static_use_hash: true
+  default_locale: "en"
+
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 15.0

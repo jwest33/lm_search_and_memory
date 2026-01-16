@@ -1,0 +1,13 @@
+# Core dependencies
+openai>=1.0.0          # OpenAI-compatible client for llama.cpp
+requests>=2.28.0       # HTTP requests for SearXNG
+
+# Structured output validation
+instructor>=1.0.0      # Structured LLM outputs with Pydantic validation
+pydantic>=2.0.0        # Data validation and settings management
+
+# Vector memory (ChromaDB)
+chromadb>=0.4.0        # Vector database for semantic search
+
+# Optional: Better embeddings (downloads ~90MB model on first run)
+sentence-transformers>=2.2.0
