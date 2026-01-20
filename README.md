@@ -1,95 +1,45 @@
-# LLM Memory Bridge - Quick Start Guide
+# SearXNG LLM Tools
 
-A Python bridge that gives your local LLM (via llama.cpp) persistent memory and web search capabilities.
+Local LLM integration with web search and persistent memory via llama.cpp and SearXNG.
 
-## What It Does
+## Modules
 
-- **Web Search**: Your LLM can search the internet via your local SearXNG instance
-- **Fact Memory**: Automatically extracts and stores facts from conversations
-- **Recall**: Retrieves relevant memories when needed
-- **Salience Tracking**: Important/frequently-accessed facts bubble up; unused ones fade
-
----
+| Module | Description | Docs |
+|--------|-------------|------|
+| **Search with Memory** | Chat with web search and SQLite & Vector memory | [MEMORY.md](MEMORY.md) |
+| **Deep Research** | Multi-phase agentic research with task anchoring | [DEEP_RESEARCH.md](DEEP_RESEARCH.md) |
 
 ## Prerequisites
 
-1. **llama.cpp server running** with your model loaded
-2. **SearXNG + Valkey running** (from the Docker setup)
-3. **Python 3.10+**
+- llama.cpp server running with your model
+- SearXNG + Valkey via Docker
+- Python 3.10+
 
----
+## Quick Install
 
-## Installation
-
-### Minimal Setup (SQLite only)
-
-```powershell
-pip install openai requests
+```bash
+pip install openai requests instructor pydantic
 ```
 
-### Full Setup (with vector memory)
+## Quick Start
 
-```powershell
-pip install openai requests chromadb
+```bash
+# Simple conversational search
+python simple_llm_search.py  --llm http://localhost:8080 --searxng http://localhost:8888
 
-# Optional: Better embeddings (downloads ~90MB model)
-pip install sentence-transformers
-```
-
----
-
-## Running
-
-### Start your services first
-
-```powershell
-# Terminal 1: Start llama.cpp server (adjust path/model as needed)
-llama-server -m D:\containers\sear-xng\gemma-3-12b-it-abliterated-q8_0.gguf -c 16384 --port 8080
-
-# Terminal 2: Start SearXNG (if not already running)
-cd D:\containers\sear-xng
-docker compose up -d
-```
-
-### Run the memory bridge
-
-**Simple version** (SQLite only):
-
-```powershell
-python simple_llm_search.py --llm http://localhost:8080 --searxng http://localhost:8888
-```
-
-**Full version** (with vector memory):
-
-```powershell
+# Full search with vector memory
 python llm_memory_bridge.py --llm-url http://localhost:8080 --searxng-url http://localhost:8888
+
+# Deep multi-step research
+python deep_research.py --mode thorough "your research question"
 ```
 
----
+## Services
 
-## How to Use
+```bash
+# Start SearXNG
+docker compose up -d
 
-Once running, just chat normally. The LLM has been instructed to use special tags when it needs to search or remember things.
-
-### Automatic Behaviors
-
-The LLM will automatically:
-
-- Use `<search>` when it needs current information
-- Use `<remember>` when you tell it something important
-- Use `<recall>` when it needs to retrieve past information
-
-You'll see indicators when these happen:
-
+# Start llama.cpp (adjust model path)
+llama-server -m /path/to/model.gguf --ctx-size 16384 --port 8080
 ```
-[🔍 Searching: current weather in Denver]
-[💾 Remembering: user prefers Python over JavaScript]
-[🧠 Recalling: user preferences]
-```
-
-### Example Conversation
-
-```
-You: My name is Jake and I live in Fort Collins.
-
-[💾 Remembering: user's name is Jake, lives in Fort Collins]
